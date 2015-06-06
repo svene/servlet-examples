@@ -1,0 +1,39 @@
+= Example for a ServletContainerInitializer
+
+== Usage
+
+* On the commandline execute *./gradlew appRun*
+
+
+----
+Enabling hot deployment with interval of 2 second(s)
+2015-06-06 09:28:59.386 INFO  - Logging initialized @724ms
+2015-06-06 09:28:59.654 INFO  - jetty-9.2.3.v20140905
+2015-06-06 09:28:59.752 WARN  - ServletContainerInitializers: detected. Class hierarchy: empty
+** DemoServletContainerInitializer.onStartup // <1>
+2015-06-06 09:29:00.033 INFO  - Started o.a.g.JettyWebAppContext@3851af4e{/appContext,file:/home/sven/se/sweng/_github/svene/servlet-examples/servletcontainerinitializer/build/inplaceWebapp/,AVAILABLE}
+2015-06-06 09:29:00.039 INFO  - Started ServerConnector@1847d94f{HTTP/1.1}{0.0.0.0:8080}
+2015-06-06 09:29:00.040 INFO  - Started @1380ms
+2015-06-06 09:29:00.045 WARN  - Jetty 9.2.3.v20140905 started and listening on port 8080
+2015-06-06 09:29:00.061 WARN  - appContext runs at:
+2015-06-06 09:29:00.062 WARN  -   http://localhost:8080/appContext
+Press any key to stop the server.
+----
+<1> This line among the messages from the startup of Jetty prooves that *DemoServletContainerInitializer* is invoked.
+
+== How it works
+
+* _DemoServletContainerInitializer_ implements *ServletContainerInitializer* and outputs the mentioned message in it's _onStartup()_ method.
+* The container (Jetty in this case) needs to be informed that it exists.
+That is done using the following *service provider configuration file*:
+
+.src/main/resources/META-INF/services/javax.servlet.ServletContainerInitializer
+----
+org.svenehrke.examples.servlet3.servletcontainerinitializer.DemoServletContainerInitializer
+----
+
+Spring for example uses this approach to initialize the existing _WebApplicationInitializer_'s in a Spring Webapplication.
+It's _ServletContainerInitializer_ class https://github.com/spring-projects/spring-framework/blob/v4.1.6.RELEASE/spring-web/src/main/java/org/springframework/web/SpringServletContainerInitializer.java[SpringServletContainerInitializer]
+comes with a very good description on how this works in a servlet 3.0 compliant container.
+
+

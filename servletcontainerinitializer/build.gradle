@@ -12,11 +12,11 @@ apply plugin: 'org.akhikhl.gretty'
 
 repositories {
     mavenLocal()
-    jCenter()
+    jcenter()
 }
 
 dependencies {
-    compile 'org.webjars:bootstrap:3.3.1'
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
 }
 
 war {
